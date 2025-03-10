@@ -1,0 +1,34 @@
+name: CI/CD Pipeline for ML Model
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the code
+      - uses: actions/checkout@v3
+
+      # Step 2: Download Iris dataset (if not in the repo)
+      - name: Download Iris Dataset from UCI
+        run: |
+          curl -o iris.csv https://raw.githubusercontent.com/kodigitaccount/cicd_iris/refs/heads/main/iris.csv
+
+      # Step 3: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      # Step 5: Train the model
+      - name: Train Model
+        run: |
+          python mlcode.py
